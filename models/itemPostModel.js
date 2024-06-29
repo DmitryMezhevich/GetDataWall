@@ -16,8 +16,7 @@ module.exports = class ItemPostModule {
         this.reposts = module.reposts.count;
         this.likes = module.likes.count;
         this.views = module.views === undefined ? 0 : module.views.count;
-        this.text = module.text;
-        // this.text = module.text.slice(0, 250);
+        this.text = module.text.slice(0, 250);
 
         if (module.attachments) {
             const attachments = module.attachments;

@@ -64,7 +64,7 @@ class ControllerHelper {
     }
 
     getUrlList(listWall, filter) {
-        listWall.forEach((item) => {
+        let list = listWall.flatMap((item) => {
             if (item.hasOwnProperty('copy_history')) {
                 item.attachments = item.copy_history[0].attachments;
                 item.date = item.copy_history[0].date;
@@ -86,6 +86,10 @@ class ControllerHelper {
             }
             return [];
         });
+
+        list = list.sort((a, b) => b.reposts - a.reposts);
+
+        return list;
     }
 
     async sendToGoogleSheets(urlList) {
