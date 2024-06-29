@@ -86,8 +86,6 @@ class ControllerHelper {
             }
             return [];
         });
-
-        return list;
     }
 
     async sendToGoogleSheets(urlList) {
