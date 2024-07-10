@@ -5,7 +5,7 @@ module.exports = class FilterModel {
     noMoreReposts;
     startDate;
     endDate;
-    minDate;
+    minDate = 1704067200;
 
     constructor(module) {
         this.noLessReposts =
@@ -17,14 +17,9 @@ module.exports = class FilterModel {
                 ? Number.MAX_VALUE
                 : parseInt(module.noMoreReposts);
         this.startDate =
-            module.startDate.length === 0
-                ? moment(0).unix()
-                : moment(module.startDate, 'DD-MM-YYYY HH-mm').unix();
+            module.startDate.length === 0 ? moment(0).unix() : module.startDate;
         this.endDate =
-            module.endDate.length === 0
-                ? moment().unix()
-                : moment(module.endDate, 'DD-MM-YYYY HH-mm').unix();
-        this.minDate = 1704067200;
+            module.endDate.length === 0 ? moment().unix() : module.endDate;
 
         if (this.startDate === this.endDate) {
             const dayPlus = moment.unix(this.endDate);
