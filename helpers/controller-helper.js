@@ -5,6 +5,8 @@ const ItemPostModule = require('../models/itemPostModel');
 
 const TOKEN =
     'vk1.a.KFKmxEKIi-kJiFKL4vbjsc5m2FIGRGEWKXFNvZzAIIKMbohUPGcOUBv812djGZy9H4vIJhVHsBm96QaC4R71fs0cw9FdJxi84v2PjZ0gZ-Vbaa8Debn9wKuJKBads66lO6TnB0FvZxGDXk10ql5JbAYDUozXDS4oLJSohLIjxoUx06n5Hmq0HPYDaVKHoh2KMrJK2Y02BPnVy8f4t49w6g';
+const urlGoogleSheets =
+    'https://script.google.com/macros/s/AKfycbxbWnMOsDlyyQcxTgNLLma2AH1TSWlYRWuamt6TsYs3WWkhavOxoG8osXx8DR5Q1_9ejg/exec';
 
 class ControllerHelper {
     async getListWall(filter) {
@@ -42,7 +44,6 @@ class ControllerHelper {
                 item.text = item.copy_history[0].text;
             }
             const reposts = item.reposts.count;
-            const date = item.date;
             if (
                 reposts >= filter.noLessReposts &&
                 reposts <= filter.noMoreReposts
@@ -58,9 +59,19 @@ class ControllerHelper {
     }
 
     async sendToGoogleSheets(urlList) {
-        const urlGoogleSheets =
-            'https://script.google.com/macros/s/AKfycbxEffBnaCWp4Izit7vhGmIvZprScT4ZsWVhsTdj3NvVF_kItVJvdp2I5kqyL6SVPZQGjQ/exec';
-        axios.post(urlGoogleSheets, urlList, {
+        const data = urlList.map((item) => {
+            return [
+                item.date,
+                item.reposts,
+                item.likes,
+                item.views,
+                `=IMAGE("${item.urlImg}")`,
+                item.text,
+                item.url,
+            ];
+        });
+
+        axios.post(urlGoogleSheets, data, {
             headers: { 'Content-Type': 'application/json' },
         });
     }
